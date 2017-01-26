@@ -19,7 +19,9 @@ const validate = (values) => {
     return errors;
 }
 
-const Form = ({params, signIn, handleSubmit, pristine, submitting}) => {
+const Form = ({params, signIn, handleSubmit, pristine, submitting, signInMessage}) => {
+    console.log(signInMessage)
+    var signInError = signInMessage !== '' ? <div className="invalid-signin bg-danger"> {signInMessage} </div> : null;
     return (
         <div className=" container auth-container">
             <div className="col-md-12">
@@ -27,6 +29,7 @@ const Form = ({params, signIn, handleSubmit, pristine, submitting}) => {
                     <div className="col-md-3"> </div>
                     <div className="col-md-6 box">
                         <div className="col-md-12">
+                            {signInError}
                             <div className="title"> Sign in to your XPED account</div>
 
                             <form onSubmit={handleSubmit(signIn)} className="clearfix">
@@ -54,8 +57,9 @@ let SignInForm = reduxForm({
 })(Form);
 
 const mapStateToProps = (state, ownProps) => {
-    return {
 
+    return {
+        ...state.app
     }
 }
 

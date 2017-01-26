@@ -1,3 +1,7 @@
+/***
+ * @flow
+ */
+
 import axios from 'axios';
 
 
@@ -51,7 +55,14 @@ export default class ApiFetcher {
             method: method.toLowerCase(),
             url: `${url}`,
             data: data,
-            headers: headers
+            headers: headers,
+            validateStatus: function (status) {
+                return status >= 200 && status < 500;
+            }
         });
+    }
+
+    static post(url: string, data: any) {
+        return axios.post(url, data)
     }
 }

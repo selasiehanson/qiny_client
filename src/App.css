@@ -313,3 +313,12 @@ main {
 .notify-panel .bg-info {
   border: 1px solid #d74548;
 }
+
+
+/** Auth ***/
+.invalid-signin {
+  padding: 12px;  
+  background: #f2dede;
+  border: 1px solid #e25151;
+  margin-bottom: 15px;
+}

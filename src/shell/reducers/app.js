@@ -4,7 +4,8 @@ import {
     GET_APP_STATE,
     SIGN_OUT,
     ACCOUNT_SELECTED,
-    SAGA_GET_USER_PROFILE_SUCCESS
+    SAGA_GET_USER_PROFILE_SUCCESS,
+    SAGA_LOGIN_INVALID
 } from '../constants';
 
 const initialState = {
@@ -12,11 +13,12 @@ const initialState = {
     profile: null,
     state: APP_STATES.NOT_AUTHENTICATED,
     justSignedIn: false,
-    justSignedOut: false
+    justSignedOut: false,
+    signInMessage: ''
 }
 
-function setUser(profile) {    
-    localStorage.setItem('profile', JSON.stringify(profile));    
+function setUser(profile) {
+    localStorage.setItem('profile', JSON.stringify(profile));
 }
 
 function setToken(token) {
@@ -65,7 +67,7 @@ const app = (state = initialState, action) => {
         case SAGA_GET_USER_PROFILE_SUCCESS:
             setUser(action.data);
             return { ...state, profile: action.data }
-            
+
         case SIGN_OUT:
             clearDetailsOnSignout();
             return { ...state, state: APP_STATES.NOT_AUTHENTICATED, justSignedIn: false, justSignedOut: true };
@@ -77,6 +79,8 @@ const app = (state = initialState, action) => {
             }
             return { ...state, state: APP_STATES.NOT_AUTHENTICATED, justSignedIn: false, justSignedOut: false }
 
+        case SAGA_LOGIN_INVALID:
+            return { ...state, signInMessage: 'Invalid login. Please try again.' }
         case SAGA_LOGIN_SUCCESS:
             setToken(action.data.jwt)
             return { ...state, state: APP_STATES.AUTHENTICATED, justSignedIn: true, justSignedOut: false }
