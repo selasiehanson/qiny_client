@@ -3,10 +3,10 @@ import { fork } from 'redux-saga/effects';
 import { clientsFetchList, addClient, getClient, updateClient } from './clients';
 import { productsFetchList, addProduct, getProduct, updateProduct } from './products';
 import { invoicesFetchList, addInvoice, getInvoice, updateInvoice } from './invoices';
-import {taxesFetchList, addTax, getTax, updateTax } from './taxes';
+import { taxesFetchList, addTax, getTax, updateTax } from './taxes';
 import { fetchCurrencies } from './currencies';
 
-import { signin, getUserProfile } from './auth';
+import { signin, getUserProfile, register } from './auth';
 import {
     SAGA_FETCH_CLIENTS,
     SAGA_GET_CLIENT,
@@ -27,10 +27,11 @@ import {
     SAGA_GET_TAX,
     SAGA_ADD_TAX,
     SAGA_UPDATE_TAX,
-    
+
     SAGA_LOGIN,
     SAGA_GET_USER_PROFILE,
-    SAGA_FETCH_CURRENCIES
+    SAGA_FETCH_CURRENCIES,
+    SAGA_SIGNUP
 } from '../constants';
 
 /**
@@ -39,6 +40,7 @@ import {
 export function* sagas() {
     yield [
         fork(takeLatest, SAGA_LOGIN, signin),
+        fork(takeLatest, SAGA_SIGNUP, register),
         fork(takeLatest, SAGA_GET_USER_PROFILE, getUserProfile),
 
         fork(takeLatest, SAGA_FETCH_CLIENTS, clientsFetchList),

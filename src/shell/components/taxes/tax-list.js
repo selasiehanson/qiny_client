@@ -38,7 +38,11 @@ class TaxList extends Component {
             { name: 'view', type: 'action', header: '', action: 'viewTax' },
             { name: 'edit', type: 'action', header: '', action: 'editTax' }
         ];
-        let content = <span> No taxes present, kindly add one. </span>
+        let taxLink = <Link to="/taxes/new" className="btn btn-primary"> New Tax </Link>
+        let content = <div className="zero-items">
+            <p> No taxes present, kindly add one. </p>
+            {taxLink}
+        </div>
 
         let columnWrappers = {
             view(f) {
@@ -49,20 +53,21 @@ class TaxList extends Component {
             }
 
         }
-
+        let newTaxLink;
         if (taxes.length !== 0) {
             content = <Table
                 tableData={taxes}
                 tableFields={tableFields}
                 handleEvent={this.handleEvent}
                 columnWrappers={columnWrappers} />
+            newTaxLink = taxLink;
         }
         return (
             <div>
                 <div className="content-header">
                     <span className="title"> Taxes </span>
                     <span className="pull-right">
-                        <Link to="/taxes/new" className="btn btn-primary"> New Tax </Link>
+                        {newTaxLink}
                     </span>
                 </div>
                 {content}

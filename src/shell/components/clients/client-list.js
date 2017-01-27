@@ -39,7 +39,12 @@ class ClientList extends Component {
             { name: 'view', type: 'action', header: '', action: 'viewClient' },
             { name: 'edit', type: 'action', header: '', action: 'editClient' }
         ];
-        let content = <span> No clients present, kindly add one. </span>
+
+        let clientLink = <Link to="/clients/new" className="btn btn-primary"> New Client </Link>
+        let content = <div className="zero-items">
+            <p> No clients present, kindly add one. </p>
+            {clientLink}
+        </div>
 
         let columnWrappers = {
             view(f) {
@@ -51,19 +56,23 @@ class ClientList extends Component {
 
         }
 
+        let newClientLink;
+
         if (clients.length !== 0) {
             content = <Table
                 tableData={clients}
                 tableFields={tableFields}
                 handleEvent={this.handleEvent}
                 columnWrappers={columnWrappers} />
+            newClientLink = clientLink
+
         }
         return (
             <div>
                 <div className="content-header">
                     <span className="title"> Clients </span>
                     <span className="pull-right">
-                        <Link to="/clients/new" className="btn btn-primary"> New Client </Link>
+                        {newClientLink}
                     </span>
                 </div>
                 {content}

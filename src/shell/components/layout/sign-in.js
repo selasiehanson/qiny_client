@@ -20,8 +20,7 @@ const validate = (values) => {
 }
 
 const Form = ({params, signIn, handleSubmit, pristine, submitting, signInMessage}) => {
-    console.log(signInMessage)
-    var signInError = signInMessage !== '' ? <div className="invalid-signin bg-danger"> {signInMessage} </div> : null;
+    var signInError = signInMessage !== null ? <div className="invalid-signin bg-danger"> {signInMessage} </div> : null;
     return (
         <div className=" container auth-container">
             <div className="col-md-12">

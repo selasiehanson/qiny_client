@@ -46,10 +46,10 @@ class InvoiceList extends Component {
             { name: 'edit', type: 'action', header: '', action: 'editInvoice' }
         ];
 
+        let invoiceLink = <Link to="/invoices/new" className="btn btn-primary"> New invoice </Link>;
         let content = <div className="zero-items">
             <p> No invoices present, kindly add one. </p>
-            <Link to="/invoices/new" className="btn btn-primary"> New invoice </Link>
-
+            {invoiceLink}
         </div>
 
         let columnWrappers = {
@@ -60,20 +60,22 @@ class InvoiceList extends Component {
                 return <span> <i className="fa fa-pencil"> </i> </span>
             }
         }
-
+        let newInvoiceLink;
         if (all.length !== 0) {
             content = <Table
                 tableData={all}
                 tableFields={tableFields}
                 handleEvent={this.handleEvent}
                 columnWrappers={columnWrappers} />
+            newInvoiceLink = invoiceLink;
+
         }
         return (
             <div>
                 <div className="content-header">
                     <span className="title"> Invoices </span>
                     <span className="pull-right">
-                        <Link to="/invoices/new" className="btn btn-primary"> New invoice </Link>
+                        {newInvoiceLink}
                     </span>
                 </div>
                 {content}

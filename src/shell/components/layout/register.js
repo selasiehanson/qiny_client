@@ -1,8 +1,9 @@
 import React from 'react';
 import { reduxForm, Field } from 'redux-form';
-import {renderInput} from '../utils/forms';
+import { renderInput } from '../utils/forms';
 import { connect } from 'react-redux';
 import Links from './auth-links';
+import { signUp } from '../../actions/auth';
 
 const validate = (values) => {
     const errors = {};
@@ -27,7 +28,7 @@ const validate = (values) => {
         errors.password = 'Please provide a password.'
     }
 
-    if(values.password !== values.password_confirmation ){
+    if (values.password !== values.password_confirmation) {
         errors.password = "Password and confirmation don't match."
         errors.password_confirmation = 'Please provide a password.'
     }
@@ -35,23 +36,27 @@ const validate = (values) => {
     return errors;
 }
 
-const Form = ({params, signIn , handleSubmit, invalid, submitting}) => {
+const Form = ({params, register, handleSubmit, invalid, submitting, signupMessage}) => {
+    var signupError = signupMessage !== null ? <div className="invalid-signin bg-danger"> {signupMessage} </div> : null;
+
     return (
-        <div className=" container auth-container">            
+        <div className=" container auth-container">
             <div className="clearfix">
-                <div className="col-md-3"> </div>                
+                <div className="col-md-3"> </div>
                 <div className="col-md-6 box">
+
                     <div className="col-md-12">
+                        {signupError}
                         <div className="title"> Create your XPED account</div>
                     </div>
-                    <form onSubmit={handleSubmit(signIn)} className="clearfix">
+                    <form onSubmit={handleSubmit(register)} className="clearfix">
                         <div className="clearfix">
-                            <div className="col-md-6"> 
+                            <div className="col-md-6">
                                 <Field name="first_name" component={renderInput} placeholder="First Name" />
                             </div>
-                            <div className="col-md-6"> 
-                                <Field name="last_name" component={renderInput} placeholder="Last Name"  className="col-md-6"/>
-                            </div>                            
+                            <div className="col-md-6">
+                                <Field name="last_name" component={renderInput} placeholder="Last Name" className="col-md-6" />
+                            </div>
                         </div>
                         <div className="col-md-12">
                             <Field name="email" component={renderInput} placeholder="Email" />
@@ -60,13 +65,13 @@ const Form = ({params, signIn , handleSubmit, invalid, submitting}) => {
                             <Field name="organization_name" component={renderInput} placeholder="Name of organization" />
                         </div>
                         <div className="clearfix">
-                            <div className="col-md-6"> 
+                            <div className="col-md-6">
                                 <Field name="password" component={renderInput} placeholder="Password" type="password" />
                             </div>
-                            <div className="col-md-6"> 
-                                <Field name="password_confirmation" component={renderInput} placeholder="Confirm Password" type="password" />        
+                            <div className="col-md-6">
+                                <Field name="password_confirmation" component={renderInput} placeholder="Confirm Password" type="password" />
                             </div>
-                        </div>   
+                        </div>
                         <div className="col-md-12">
                             <div className="pull-right form-buttons">
                                 <button type="submit" className="btn btn-success"> Sign In </button>
@@ -78,11 +83,11 @@ const Form = ({params, signIn , handleSubmit, invalid, submitting}) => {
                             <Links mode="signup" />
                         </div>
                     </div>
-                </div>            
+                </div>
                 <div className="col-md-3"> </div>
             </div>
-            
-        </div>        
+
+        </div>
     );
 }
 
@@ -93,14 +98,16 @@ let RegisterForm = reduxForm({
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        
+        ...state.app
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        signIn(credentials){
-
+        register(credentials) {
+            console.log('registerring')
+            console.log(credentials)
+            dispatch(signUp(credentials));
         }
     }
 }

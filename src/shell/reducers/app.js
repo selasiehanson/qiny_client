@@ -5,7 +5,8 @@ import {
     SIGN_OUT,
     ACCOUNT_SELECTED,
     SAGA_GET_USER_PROFILE_SUCCESS,
-    SAGA_LOGIN_INVALID
+    SAGA_LOGIN_INVALID,
+    SAGA_SIGNUP_ERROR
 } from '../constants';
 
 const initialState = {
@@ -14,7 +15,8 @@ const initialState = {
     state: APP_STATES.NOT_AUTHENTICATED,
     justSignedIn: false,
     justSignedOut: false,
-    signInMessage: ''
+    signInMessage: null,
+    signupMessage: null
 }
 
 function setUser(profile) {
@@ -84,6 +86,8 @@ const app = (state = initialState, action) => {
         case SAGA_LOGIN_SUCCESS:
             setToken(action.data.jwt)
             return { ...state, state: APP_STATES.AUTHENTICATED, justSignedIn: true, justSignedOut: false }
+        case SAGA_SIGNUP_ERROR:
+            return { ...state, signupMessage: action.data }
 
         default:
             if (AuthManager.isLoggedIn()) {

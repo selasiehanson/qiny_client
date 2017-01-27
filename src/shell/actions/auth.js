@@ -1,12 +1,20 @@
 import {
     SAGA_LOGIN,
     GET_APP_STATE,
-    SIGN_OUT
+    SIGN_OUT,
+    SAGA_SIGNUP
 } from '../constants';
 
 export function signin(data) {
     return {
         type: SAGA_LOGIN,
+        data
+    }
+}
+
+export function signUp(data) {
+    return {
+        type: SAGA_SIGNUP,
         data
     }
 }
