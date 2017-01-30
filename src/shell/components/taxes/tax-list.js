@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Table from '../utils/table'
 import { Link } from 'react-router';
-import { getTaxes } from '../../actions/taxes';
+import { getTaxes, initGetTaxes } from '../../actions/taxes';
 import { hashHistory } from 'react-router';
 
 
@@ -31,7 +31,7 @@ class TaxList extends Component {
     }
 
     render() {
-        let {taxes} = this.props;
+        let {taxes, loading} = this.props;
         let tableFields = [
             { name: 'name', header: "Name" },
             { name: "amount", header: "Amount" },
@@ -39,11 +39,17 @@ class TaxList extends Component {
             { name: 'edit', type: 'action', header: '', action: 'editTax' }
         ];
         let taxLink = <Link to="/taxes/new" className="btn btn-primary"> New Tax </Link>
-        let content = <div className="zero-items">
-            <p> No taxes present, kindly add one. </p>
-            {taxLink}
-        </div>
-
+        let content;
+        if (loading) {
+            content = <div className="zero-items">
+                <p> Fetching taxes please wait ....  </p>
+            </div >
+        } else {
+            content = <div className="zero-items">
+                <p> No taxes present, kindly add one. </p>
+                {taxLink}
+            </div>
+        }
         let columnWrappers = {
             view(f) {
                 return <span> <i className="fa fa-eye"> </i> </span>
@@ -77,9 +83,10 @@ class TaxList extends Component {
 }
 
 const mapStateToProps = (state, ownState) => {
-    let {all } = state.taxes
+    let {all, loading } = state.taxes
     return {
         taxes: all,
+        loading
         //transactionForm: state.form['transactions-search']
     }
 }
@@ -88,6 +95,7 @@ const mapStateToProps = (state, ownState) => {
 const mapDispatchToProps = (dispatch, state) => {
     return {
         loadTaxes() {
+            dispatch(initGetTaxes())
             dispatch(getTaxes())
         }
     }

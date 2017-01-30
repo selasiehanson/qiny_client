@@ -15,13 +15,12 @@ const sagaMiddleware = createSagaMiddleware();
 
 let middlewares = [];
 if (process.env) {
-    if (process.env.NODE_ENV === 'developtment') {
+    if (process.env.NODE_ENV === 'development') {
         middlewares.push(createLogger());
     }
 }
 
 middlewares.push(sagaMiddleware)
-console.log(middlewares)
 const middleWare = applyMiddleware(...middlewares, routerMiddleware(hashHistory));
 
 let store = createStore(contactsApp, middleWare);

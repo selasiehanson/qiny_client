@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Table from '../utils/table';
 import { Link } from 'react-router';
-import { getInvoices } from '../../actions/invoices';
+import { getInvoices, initGetInvoices } from '../../actions/invoices';
 import { hashHistory } from 'react-router';
 
 
@@ -34,7 +34,7 @@ class InvoiceList extends Component {
 
     render() {
 
-        let {all} = this.props;
+        let {all, loading} = this.props;
         let tableFields = [
             { name: 'invoice_number', header: 'Invoice Number' },
             { name: 'invoice_date', header: "Invoice Date" },
@@ -47,11 +47,17 @@ class InvoiceList extends Component {
         ];
 
         let invoiceLink = <Link to="/invoices/new" className="btn btn-primary"> New invoice </Link>;
-        let content = <div className="zero-items">
-            <p> No invoices present, kindly add one. </p>
-            {invoiceLink}
-        </div>
-
+        let content;
+        if (loading) {
+            content = <div className="zero-items">
+                <p> Fetching invoices please wait ....  </p>
+            </div >
+        } else {
+            content = <div className="zero-items">
+                <p> No invoices present, kindly add one. </p>
+                {invoiceLink}
+            </div>
+        }
         let columnWrappers = {
             view(f) {
                 return <span> <i className="fa fa-eye"> </i> </span>
@@ -95,7 +101,8 @@ const mapStateToProps = (state, ownState) => {
 const mapDispatchToProps = (dispatch, state) => {
     return {
         loadInvoices() {
-            dispatch(getInvoices())
+            dispatch(initGetInvoices());
+            dispatch(getInvoices());
         }
     }
 }

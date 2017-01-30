@@ -8,9 +8,15 @@ import {
     SHOW_NOTIFICATION,
     PRODUCTS_SHOW_NEW,
     SAGA_GET_PRODUCT,
-    SAGA_UPDATE_PRODUCT
+    SAGA_UPDATE_PRODUCT,
+    PRODUCTS_ALL
 } from '../constants';
 
+export const initGetProducts = () => {
+    return {
+        type: PRODUCTS_ALL
+    }
+}
 export const getProducts = () => {
     return {
         type: SAGA_FETCH_PRODUCTS
@@ -23,7 +29,6 @@ export const addProduct = (client) => {
         data: client
     };
 }
-
 
 export const updateProduct = (client) => {
     return {

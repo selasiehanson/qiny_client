@@ -8,8 +8,15 @@ import {
     SHOW_NOTIFICATION,
     SAGA_GET_TAX,
     TAXES_SHOW_NEW,
-    SAGA_UPDATE_TAX
+    SAGA_UPDATE_TAX,
+    TAXES_ALL
 } from '../constants';
+
+export const initGetTaxes = () => {
+    return {
+        type: TAXES_ALL
+    }
+}
 
 export const getTaxes = () => {
     return {

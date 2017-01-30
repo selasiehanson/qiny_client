@@ -4,7 +4,8 @@ import {
     SAGA_UPDATE_INVOICE_SUCCESS,
     INVOICE_LOADING,
     SAGA_GET_INVOICE_SUCCESS,
-    INVOICES_SHOW_NEW
+    INVOICES_SHOW_NEW,
+    INVOICES_ALL
 } from '../constants';
 import { dateHelpers } from '../utils/date-helpers';
 
@@ -13,12 +14,15 @@ const initialState = {
     current: {},
     all: [],
     original: [],
+    loading: false,
     afterSave: false,
     isLoading: false
 }
 
 const invoices = (state = initialState, action) => {
     switch (action.type) {
+        case INVOICES_ALL:
+            return { ...state, loading: true }
         case SAGA_FETCH_INVOICES_SUCCESS:
             const old = action.invoices;
             const invoices = action.invoices.map((invoice) => {
@@ -30,7 +34,7 @@ const invoices = (state = initialState, action) => {
                 newInvoice.total_tax = `${newInvoice.currency.currency_code} ${newInvoice.total_tax}`;
                 return newInvoice;
             });
-            return { ...state, all: invoices, afterSave: false, original: old, current: {} }
+            return { ...state, all: invoices, afterSave: false, original: old, current: {}, loading: false }
 
         case INVOICES_SHOW_NEW:
             return { ...state, current: {} }

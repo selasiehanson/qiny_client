@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Table from '../utils/table'
 import { Link } from 'react-router';
-import { getProducts } from '../../actions/products';
+import { getProducts, initGetProducts } from '../../actions/products';
 import { hashHistory } from 'react-router';
 
 class ProductList extends Component {
@@ -31,7 +31,7 @@ class ProductList extends Component {
     }
 
     render() {
-        let {products } = this.props;
+        let {products, loading } = this.props;
         let tableFields = [
             { name: 'name', header: "Name" },
             { name: 'description', header: "Description" },
@@ -41,10 +41,19 @@ class ProductList extends Component {
             { name: 'edit', type: 'action', header: '', action: 'editProduct' }
         ];
 
-        let content = <div className="zero-items">
-            <p>No products present, kindly add one. </p>
-            <p> <Link to="/products/new" className="btn btn-primary"> New Product </Link> </p>
-        </div>
+        let productLink = <Link to="/products/new" className="btn btn-primary"> New Product </Link>
+        let content;
+        if (loading) {
+            content = <div className="zero-items">
+                <p> fetching products please wait ....  </p>
+            </div >
+        } else {
+            content = <div className="zero-items">
+                <p> No products present, kindly add one. </p>
+                {productLink}
+            </div>
+        }
+
         let newProductLink;
         let columnWrappers = {
             view(f) {
@@ -62,7 +71,7 @@ class ProductList extends Component {
                 handleEvent={this.handleEvent}
                 columnWrappers={columnWrappers} />
 
-            newProductLink = <Link to="/products/new" className="btn btn-primary"> New Product </Link>
+            newProductLink = productLink
         }
 
         return (
@@ -80,8 +89,10 @@ class ProductList extends Component {
 }
 
 const mapStateToProps = (state, ownState) => {
+    let {all, loading} = state.products;
     return {
-        products: state.products.all
+        products: all,
+        loading
     }
 }
 
@@ -89,7 +100,8 @@ const mapStateToProps = (state, ownState) => {
 const mapDispatchToProps = (dispatch, state) => {
     return {
         loadProducts() {
-            dispatch(getProducts())
+            dispatch(initGetProducts());
+            dispatch(getProducts());
         }
     }
 }

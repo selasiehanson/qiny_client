@@ -288,7 +288,6 @@ const transformInvoiceToPersist = (invoice) => {
 }
 
 const convertFromInvoiceToForm = (invoiceJson) => {
-    console.log(invoiceJson)
     if (!invoiceJson)
         return null;
 
@@ -310,7 +309,6 @@ const convertFromInvoiceToForm = (invoiceJson) => {
         value: invoiceJson.currency.id
     };
 
-    console.log(form)
     return form;
 }
 
@@ -325,11 +323,9 @@ const mapStateToProps = (state, ownProps) => {
             invoiceForm = null;
         } else {
             invoiceForm = convertFromInvoiceToForm(state.invoices.current)
-            console.log(invoiceForm)
         }
     }
 
-    console.log(state)
     return {
         ...ownProps,
         ...state.invoices,

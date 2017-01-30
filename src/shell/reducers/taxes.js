@@ -5,8 +5,8 @@ import {
     TAXES_EDIT,
     SAGA_FETCH_TAXES_SUCCESS,
     TAX_CACHE,
-    SAGA_GET_TAX_SUCCESS
-
+    SAGA_GET_TAX_SUCCESS,
+    TAXES_ALL
 } from '../constants';
 
 const getTax = (taxes, id) => taxes.filter(x => x.id === id);
@@ -15,13 +15,16 @@ const initialState = {
     afterSave: false,
     mode: "",
     current: null,
+    loading: false,
     all: []
 };
 
 const taxes = (state = initialState, action) => {
     switch (action.type) {
+        case TAXES_ALL:
+            return { ...state, loading: true }
         case SAGA_FETCH_TAXES_SUCCESS:
-            return { ...state, all: action.taxes, afterSave: false }
+            return { ...state, all: action.taxes, afterSave: false, loading: false }
         case TAXES_SHOW_NEW:
             return { ...state, current: {} }
         case TAX_CACHE:

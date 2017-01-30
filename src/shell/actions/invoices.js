@@ -9,8 +9,15 @@ import {
     SAGA_GET_INVOICE,
     INVOICES_SHOW_NEW,
     INVOICE_LOADING,
-    SAGA_UPDATE_INVOICE
+    SAGA_UPDATE_INVOICE,
+    INVOICES_ALL
 } from '../constants';
+
+export const initGetInvoices = () => {
+    return {
+        type: INVOICES_ALL
+    }
+}
 
 export const getInvoices = () => {
     return {
