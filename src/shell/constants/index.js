@@ -1,6 +1,6 @@
 export const INIT_LINK = 'INIT_LINK';
 ////CLIENT
-export const CLIENTS_ALL = 'CLIENT_ALL';
+export const CLIENTS_ALL = 'CLIENTS_ALL';
 export const CLIENT_CACHE = 'CLIENT_CACHE';
 export const CLIENTS_SHOW_NEW = 'CLIENT_SHOW_NEW';
 export const CLIENTS_EDIT = 'CLIENT_EDIT';

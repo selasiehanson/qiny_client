@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware } from 'redux';
-// import thunk from 'redux-thunk';
 import { hashHistory } from 'react-router';
 // import { browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerMiddleware } from 'react-router-redux';
@@ -12,8 +11,18 @@ import Root from './Root'
 import createLogger from 'redux-logger';
 
 const sagaMiddleware = createSagaMiddleware();
-const logger = createLogger();
-const middleWare = applyMiddleware(sagaMiddleware, logger, routerMiddleware(hashHistory));
+//const logger =
+
+let middlewares = [];
+if (process.env) {
+    if (process.env.NODE_ENV === 'developtment') {
+        middlewares.push(createLogger());
+    }
+}
+
+middlewares.push(sagaMiddleware)
+console.log(middlewares)
+const middleWare = applyMiddleware(...middlewares, routerMiddleware(hashHistory));
 
 let store = createStore(contactsApp, middleWare);
 const history = syncHistoryWithStore(hashHistory, store);

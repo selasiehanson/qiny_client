@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Table from '../utils/table'
 import { Link } from 'react-router';
-import { getClients } from '../../actions/clients';
+import { getClients, initGetClients } from '../../actions/clients';
 import { hashHistory } from 'react-router';
 
 class ClientList extends Component {
@@ -30,7 +30,8 @@ class ClientList extends Component {
     }
 
     render() {
-        let {clients} = this.props;
+        let {clients, loading} = this.props;
+
         let tableFields = [
             { name: 'name', header: "Name" },
             { name: "email", header: "Email" },
@@ -41,10 +42,19 @@ class ClientList extends Component {
         ];
 
         let clientLink = <Link to="/clients/new" className="btn btn-primary"> New Client </Link>
-        let content = <div className="zero-items">
-            <p> No clients present, kindly add one. </p>
-            {clientLink}
-        </div>
+
+
+        let content;
+        if (loading) {
+            content = <div className="zero-items">
+                <p> fetching clients please wait ....  </p>
+            </div >
+        } else {
+            content = <div className="zero-items">
+                <p> No clients present, kindly add one. </p>
+                {clientLink}
+            </div>
+        }
 
         let columnWrappers = {
             view(f) {
@@ -82,9 +92,10 @@ class ClientList extends Component {
 }
 
 const mapStateToProps = (state, ownState) => {
-    let {all } = state.clients
+    let {all, loading } = state.clients
     return {
         clients: all,
+        loading
         //transactionForm: state.form['transactions-search']
     }
 }
@@ -93,6 +104,7 @@ const mapStateToProps = (state, ownState) => {
 const mapDispatchToProps = (dispatch, state) => {
     return {
         loadClients() {
+            dispatch(initGetClients())
             dispatch(getClients())
         }
     }

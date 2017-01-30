@@ -8,8 +8,15 @@ import {
     SHOW_NOTIFICATION,
     CLIENTS_SHOW_NEW,
     SAGA_GET_CLIENT,
-    SAGA_UPDATE_CLIENT
+    SAGA_UPDATE_CLIENT,
+    CLIENTS_ALL
 } from '../constants';
+
+export const initGetClients = () => {
+    return {
+        type: CLIENTS_ALL
+    };
+}
 
 export const getClients = () => {
     return {
