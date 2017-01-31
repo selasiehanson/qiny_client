@@ -23,9 +23,9 @@ export default class NotificationPanel extends Component {
         const { type, content, display } = this.props.notification;
         const classForDisplay = cx('row notify-panel-holder', { 'show': display, hidden: !display });
         const cssForPanel = cx('notify-panel', 'bg-' + (type === 'success' ? 'success' : (type === 'error' ? 'danger' : type)));
-        let offset = ($(document).width() / 2) - (400 /2);
+        let offset = ($(document).width() / 2) - (400 / 2);
         return (
-            <div className={classForDisplay} style={{'left': `${offset}px`}}>
+            <div className={classForDisplay} style={{ 'left': `${offset}px` }}>
                 <div className={cssForPanel}>
                     <span className="">{content}</span>
                 </div>

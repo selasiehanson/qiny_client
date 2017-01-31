@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { addClient, cacheClient, getClient, showNewClient, updateClient } from '../../actions/clients';
 import { hashHistory } from 'react-router';
 import _ from 'lodash';
+import { showClientSavedMsg } from '../../actions/clients';
 
 const validate = (values) => {
     const errors = {};
@@ -29,11 +30,13 @@ const validate = (values) => {
 }
 
 
-const Form = ({params, mode, onSaveClient, handleSubmit, invalid, pristine, submitting}) => {
+const Form = ({params, onSaveClient, handleSubmit, invalid, pristine, submitting}) => {
+    let formMode = params.id ? 'Update' : 'New';
+    let buttonMode = params.id ? 'Update' : 'Create';
     return (
         <div className="clearfix">
             <div className="content-header">
-                <span className="title"> {mode} Client </span>
+                <span className="title"> {formMode} Client </span>
             </div>
             <div className="col-md-3"> </div>
             <div className="col-md-6">
@@ -44,7 +47,7 @@ const Form = ({params, mode, onSaveClient, handleSubmit, invalid, pristine, subm
                     <Field name="address" component={renderInput} placeholder="Address" />
                     <div className="pull-right form-buttons" >
                         <Link to="/clients" className="btn btn-default" > Cancel </Link>
-                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> Submit </button>
+                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} Client </button>
                     </div>
                 </form>
             </div>
@@ -61,6 +64,9 @@ let ClientForm = reduxForm({
 
 class ClientContainer extends Component {
 
+    constructor(props) {
+        super(props);
+    }
     componentWillMount() {
         let id = this.props.params.id;
         if (id) {
@@ -68,18 +74,16 @@ class ClientContainer extends Component {
         }
     }
 
-    componentWillReceiveProps() {
-        if (!this.props.params.id && !_.isEqual(this.props.current, {})) {
-            this.props.showNewClient();
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.params.id && !_.isEqual(nextProps.current, {})) {
+            nextProps.showNewClient();
         }
-    }
 
-    shouldComponentUpdate() {
-        if (this.props.afterSave) {
-            this.goToClients();
-            return false;
+        if (nextProps.afterSave) {
+            if (nextProps.successfullySaved) {
+                nextProps.showSavedMessage(nextProps.mode);
+            }
         }
-        return true;
     }
 
     goToClients() {
@@ -87,11 +91,6 @@ class ClientContainer extends Component {
     }
 
     render() {
-        //anti pattern
-        if (this.props.afterSave) {
-            this.goToClients();
-            return null;
-        }
 
         return (
             <div>
@@ -120,6 +119,9 @@ const mapDispatchToProps = (dispatch) => {
         getClient(id) {
             dispatch(getClient(id));
         },
+        showSavedMessage(mode) {
+            dispatch(showClientSavedMsg(mode));
+        },
         showNewClient() {
             dispatch(showNewClient())
         },
@@ -130,8 +132,6 @@ const mapDispatchToProps = (dispatch) => {
             } else {
                 dispatch(addClient(client));
             }
-
-
         }
     }
 }

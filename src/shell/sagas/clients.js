@@ -4,9 +4,9 @@ import {
     SAGA_FETCH_CLIENTS_SUCCESS,
     SAGA_GET_CLIENT_SUCCESS,
     SAGA_ADD_CLIENT_SUCCESS,
-    SAGA_UPDATE_CLIENT_SUCCESS    
+    SAGA_UPDATE_CLIENT_SUCCESS
 } from '../constants';
-import {showClientCreatedMsg} from '../actions/clients';
+import { showClientSavedMsg } from '../actions/clients';
 const CLIENTS = 'clients';
 export function* clientsFetchList(action) {
     //call api to get the users
@@ -29,10 +29,11 @@ export function* addClient(action) {
         const res = yield call(ApiFetcher.create, CLIENTS, action.data)
         yield put({
             type: SAGA_ADD_CLIENT_SUCCESS,
-            client: res.data
+            client: res.data,
+            success: true
         });
 
-        yield put(showClientCreatedMsg());
+        yield put(showClientSavedMsg());
     } catch (e) {
 
     }
@@ -57,7 +58,8 @@ export function* updateClient(action) {
 
         yield put({
             type: SAGA_UPDATE_CLIENT_SUCCESS,
-            client: res.data
+            client: res.data,
+            success: true
         });
     } catch (e) {
 

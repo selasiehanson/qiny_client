@@ -3,11 +3,12 @@ import MainContainer from '../../containers/MainContainer';
 import HeaderContainer from '../../containers/HeaderContainer';
 import SideBarContainer from '../../containers/SideBarContainer'
 import { connect } from 'react-redux';
-import { 
-    APP_STATES, 
+import {
+    APP_STATES,
     // ACCOUNT_SET, 
-    SHOW_NOTIFICATION, 
-    MSG_CLIENT_CREATE_SUCCESS } from '../../constants';
+    SHOW_NOTIFICATION,
+    MSG_CLIENT_SAVE_SUCCESS
+} from '../../constants';
 // import SignIn from './sign-in';
 import { checkAppState } from '../../actions/auth';
 import { hashHistory } from 'react-router';
@@ -44,7 +45,7 @@ class Layout extends Component {
             {this.props.children}
         </div>
 
-        if (app.state === APP_STATES.AUTHENTICATED) {            
+        if (app.state === APP_STATES.AUTHENTICATED) {
             if (app.selectedAccount) {
                 layout = <div>
                     <HeaderContainer />
@@ -81,7 +82,7 @@ const mapDispatchToProps = (dispatch) => {
                 type: SHOW_NOTIFICATION,
                 payload: {
                     type: 'info',
-                    content: MSG_CLIENT_CREATE_SUCCESS
+                    content: MSG_CLIENT_SAVE_SUCCESS
                 }
             });
         },

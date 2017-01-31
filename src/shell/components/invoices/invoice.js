@@ -131,7 +131,7 @@ class Form extends Component {
         );
     }
 
-    renderInvoicerFooter() {
+    renderInvoicerFooter(buttonMode) {
         return (
             <div>
                 <div className="summing-box clearfix">
@@ -213,19 +213,23 @@ class Form extends Component {
 
     render() {
 
-        let {handleSubmit, saveInvoice, pristine, submitting, products} = this.props;
+        let {handleSubmit, saveInvoice, pristine, submitting, products, params} = this.props;
+        let formMode = params.id ? 'Update' : 'New';
+        let buttonMode = params.id ? 'Update' : 'Create';
+
         let actionLinks = <span className="pull-right">
             <Link to="/invoices" className="btn btn-default"> Cancel </Link>
-            <button type="submit" className="btn btn-success" disabled={pristine || submitting}> Create invoice </button>
+            <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} invoice </button>
         </span>;
 
-        let options = ["apple", "mango", "grapes", "melon", "strawberry"].map(function (fruit) {
-            return { label: fruit, value: fruit }
-        });
+        // let options = ["apple", "mango", "grapes", "melon", "strawberry"].map(function (fruit) {
+        //     return { label: fruit, value: fruit }
+        // });
+
         return (
             <div className="invoice">
                 <div className="content-header">
-                    <span className="title"> New Invoice </span>
+                    <span className="title"> {formMode} Invoice </span>
                     {actionLinks}
                 </div>
                 <form onSubmit={handleSubmit(saveInvoice)}>
@@ -233,7 +237,7 @@ class Form extends Component {
                         {this.renderInvoiceHeader()}
                         <FieldArray name="invoice_lines" component={renderLineItems} products={products} />
                         <div>
-                            {this.renderInvoicerFooter()}
+                            {this.renderInvoicerFooter(buttonMode)}
                         </div>
                         <div className="clearfix actions">
                             {actionLinks}

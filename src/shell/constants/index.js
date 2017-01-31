@@ -101,6 +101,7 @@ export const SIGN_OUT = 'SIGN_OUT';
 
 //MESSGAES 
 export const MSG_CLIENT_CREATE_SUCCESS = 'Client created successfully';
+export const MSG_CLIENT_UPDATE_SUCCESS = 'Client updated successfully';
 export const MSG_TAX_CREATE_SUCCESS = 'Tax created successfully';
 export const MSG_INVOICE_CREATE_SUCCESS = 'Invoice created successfully';
 export const MSG_PRODUCT_CREATE_SUCCESS = 'Product created successfully';

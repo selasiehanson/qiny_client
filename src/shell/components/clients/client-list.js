@@ -47,7 +47,7 @@ class ClientList extends Component {
         let content;
         if (loading) {
             content = <div className="zero-items">
-                <p> fetching clients please wait ....  </p>
+                <p> Fetching clients, please wait ...  </p>
             </div >
         } else {
             content = <div className="zero-items">

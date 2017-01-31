@@ -29,11 +29,13 @@ const validate = (values) => {
 }
 
 
-const Form = ({params, mode, onSaveProduct, handleSubmit, invalid, pristine, submitting}) => {
+const Form = ({params, onSaveProduct, handleSubmit, invalid, pristine, submitting}) => {
+    let formMode = params.id ? 'Update' : 'New';
+    let buttonMode = params.id ? 'Update' : 'Create';
     return (
         <div className="clearfix">
             <div className="content-header">
-                <span className="title"> {mode} Product </span>
+                <span className="title"> {formMode} Product </span>
             </div>
             <div className="col-md-3"> </div>
             <div className="col-md-6">
@@ -59,7 +61,7 @@ const Form = ({params, mode, onSaveProduct, handleSubmit, invalid, pristine, sub
 
                     <div className="pull-right form-buttons" >
                         <Link to="/products" className="btn btn-default" > Cancel </Link>
-                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> Submit </button>
+                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} product </button>
                     </div>
                 </form>
             </div>
@@ -141,9 +143,9 @@ const mapDispatchToProps = (dispatch) => {
         onSaveProduct(product) {
             dispatch(cacheProduct(product));
             if (product.id) {
-                dispatch(addProduct(product));
-            } else {
                 dispatch(updateProduct(product));
+            } else {
+                dispatch(addProduct(product));
             }
 
         }

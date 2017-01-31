@@ -5,12 +5,14 @@ import {
     SAGA_FETCH_CLIENTS_SUCCESS,
     CLIENT_CACHE,
     SAGA_GET_CLIENT_SUCCESS,
-    CLIENTS_ALL
+    CLIENTS_ALL,
+    SAGA_UPDATE_CLIENT_SUCCESS
 } from '../constants';
 
 const getClient = (clients, id) => clients.filter(x => x.id === id);
 
 const initialState = {
+    successfullySaved: false,
     afterSave: false,
     mode: "",
     current: null,
@@ -29,8 +31,9 @@ const clients = (state = initialState, action) => {
         case CLIENT_CACHE:
             return { ...state, current: action.data }
         case SAGA_ADD_CLIENT_SUCCESS:
-            return { ...state, afterSave: true };
-
+            return { ...state, afterSave: true, successfullySaved: action.success, mode: 'create' };
+        case SAGA_UPDATE_CLIENT_SUCCESS:
+            return { ...state, afterSave: true, successfullySaved: action.success, mode: 'update' };
         case SAGA_GET_CLIENT_SUCCESS:
             return { ...state, current: action.client }
 

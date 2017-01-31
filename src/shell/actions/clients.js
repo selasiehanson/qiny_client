@@ -5,6 +5,7 @@ import {
     SAGA_ADD_CLIENT,
     CLIENTS_DELETE,
     MSG_CLIENT_CREATE_SUCCESS,
+    MSG_CLIENT_UPDATE_SUCCESS,
     SHOW_NOTIFICATION,
     CLIENTS_SHOW_NEW,
     SAGA_GET_CLIENT,
@@ -61,12 +62,13 @@ export const cacheClient = (client) => {
     }
 }
 
-export const showClientCreatedMsg = () => {
+export const showClientSavedMsg = (mode) => {
+    let msg = mode === 'create' ? MSG_CLIENT_CREATE_SUCCESS : MSG_CLIENT_UPDATE_SUCCESS;
     return {
         type: SHOW_NOTIFICATION,
         payload: {
             type: 'success',
-            content: MSG_CLIENT_CREATE_SUCCESS
+            content: msg
         }
     }
 }

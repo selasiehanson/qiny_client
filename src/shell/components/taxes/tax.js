@@ -28,11 +28,13 @@ const validate = (values) => {
 
 
 const Form = (props) => {
-    let { mode, onSaveTax, handleSubmit, pristine, submitting} = props;
+    let {params, onSaveTax, handleSubmit, pristine, submitting} = props;
+    let formMode = params.id ? 'Update' : 'New';
+    let buttonMode = params.id ? 'Update' : 'Create';
     return (
         <div className="clearfix">
             <div className="content-header">
-                <span className="title"> {mode} Tax </span>
+                <span className="title"> {formMode} Tax </span>
             </div>
             <div className="col-md-3"> </div>
             <div className="col-md-6">
@@ -42,7 +44,7 @@ const Form = (props) => {
                     <Field name="description" component={renderInput} placeholder="Description" />
                     <div className="pull-right form-buttons" >
                         <Link to="/taxes" className="btn btn-default" > Cancel </Link>
-                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> Submit </button>
+                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} tax </button>
                     </div>
                 </form>
             </div>
