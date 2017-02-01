@@ -54,7 +54,7 @@ export function* getClient(action) {
 
 export function* updateClient(action) {
     try {
-        const res = yield call(ApiFetcher.update, CLIENTS, action.data)
+        const res = yield call(ApiFetcher.update, CLIENTS, action.data, action.id)
 
         yield put({
             type: SAGA_UPDATE_CLIENT_SUCCESS,

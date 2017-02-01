@@ -27,14 +27,15 @@ export const getTaxes = () => {
 export const addTax = (tax) => {
     return {
         type: SAGA_ADD_TAX,
-        data: tax
+        data: { tax }
     };
 }
 
 export const updateTax = (tax) => {
     return {
         type: SAGA_UPDATE_TAX,
-        data: tax
+        data: { tax },
+        id: tax.id
     };
 }
 

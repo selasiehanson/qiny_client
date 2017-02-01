@@ -8,7 +8,7 @@ import {
 } from '../constants';
 
 const INVOICES = 'invoices';
-import {showInvoiceCreatedMsg} from '../actions/invoices';
+import { showInvoiceCreatedMsg } from '../actions/invoices';
 
 export function* invoicesFetchList(action) {
     //call api to get the users
@@ -33,7 +33,7 @@ export function* addInvoice(action) {
             invoice: res.data
         });
 
-         yield put(showInvoiceCreatedMsg());
+        yield put(showInvoiceCreatedMsg());
     } catch (e) {
 
     }
@@ -54,7 +54,7 @@ export function* getInvoice(action) {
 
 export function* updateInvoice(action) {
     try {
-        const res = yield call(ApiFetcher.update, INVOICES, action.data)
+        const res = yield call(ApiFetcher.update, INVOICES, action.data, action.id)
 
         yield put({
             type: SAGA_UPDATE_INVOICE_SUCCESS,

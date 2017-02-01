@@ -283,6 +283,7 @@ class InvoiceContainer extends Component {
 const transformInvoiceToPersist = (invoice) => {
     invoice.client_id = invoice.client.value;
     invoice.currency_id = invoice.currency.value;
+    invoice.invoice_lines = invoice.invoice_lines || [];
     invoice.invoice_lines = invoice.invoice_lines.map((line) => {
         line.product_id = line.product.value;
         return line;

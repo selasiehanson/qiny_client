@@ -23,17 +23,18 @@ export const getProducts = () => {
     }
 }
 
-export const addProduct = (client) => {
+export const addProduct = (product) => {
     return {
         type: SAGA_ADD_PRODUCT,
-        data: client
+        data: { product }
     };
 }
 
-export const updateProduct = (client) => {
+export const updateProduct = (product) => {
     return {
         type: SAGA_UPDATE_PRODUCT,
-        data: client
+        data: { product },
+        id: product.id
     };
 }
 
@@ -53,10 +54,10 @@ export const deleteProduct = (id) => {
     return { type: PRODUCTS_DELETE, id }
 }
 
-export const cacheProduct = (client) => {
+export const cacheProduct = (product) => {
     return {
         type: PRODUCT_CACHE,
-        data: client
+        data: product
     }
 }
 

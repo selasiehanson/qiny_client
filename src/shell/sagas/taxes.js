@@ -4,9 +4,9 @@ import {
     SAGA_FETCH_TAXES_SUCCESS,
     SAGA_GET_TAX_SUCCESS,
     SAGA_ADD_TAX_SUCCESS,
-    SAGA_UPDATE_TAX_SUCCESS,    
+    SAGA_UPDATE_TAX_SUCCESS,
 } from '../constants';
-import {showTaxCreatedMsg} from '../actions/taxes';
+import { showTaxCreatedMsg } from '../actions/taxes';
 const TAXES = 'taxes';
 export function* taxesFetchList(action) {
     //call api to get the users
@@ -16,7 +16,7 @@ export function* taxesFetchList(action) {
         yield put({
             type: SAGA_FETCH_TAXES_SUCCESS,
             taxes: res.data
-        });        
+        });
 
     } catch (e) {
         //todo handle error case
@@ -53,7 +53,7 @@ export function* getTax(action) {
 
 export function* updateTax(action) {
     try {
-        const res = yield call(ApiFetcher.update, TAXES, action.data)
+        const res = yield call(ApiFetcher.update, TAXES, action.data, action.id)
 
         yield put({
             type: SAGA_UPDATE_TAX_SUCCESS,

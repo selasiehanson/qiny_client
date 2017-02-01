@@ -6,7 +6,7 @@ import {
     SAGA_ADD_PRODUCT_SUCCESS,
     SAGA_UPDATE_PRODUCT_SUCCESS
 } from '../constants';
-import {showProductCreatedMsg} from '../actions/products';
+import { showProductCreatedMsg } from '../actions/products';
 
 
 const PRODUCTS = 'products';
@@ -54,7 +54,7 @@ export function* getProduct(action) {
 
 export function* updateProduct(action) {
     try {
-        const res = yield call(ApiFetcher.update, PRODUCTS, action.data)
+        const res = yield call(ApiFetcher.update, PRODUCTS, action.data, action.id)
 
         yield put({
             type: SAGA_UPDATE_PRODUCT_SUCCESS,

@@ -28,14 +28,15 @@ export const getClients = () => {
 export const addClient = (client) => {
     return {
         type: SAGA_ADD_CLIENT,
-        data: client
+        data: { client }
     };
 }
 
 export const updateClient = (client) => {
     return {
         type: SAGA_UPDATE_CLIENT,
-        data: client
+        data: { client },
+        id: client.id
     };
 }
 

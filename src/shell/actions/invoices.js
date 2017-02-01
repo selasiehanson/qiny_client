@@ -35,7 +35,8 @@ export const addInvoice = (invoice) => {
 export const updateInvoice = (invoice) => {
     return {
         type: SAGA_UPDATE_INVOICE,
-        data: { invoice }
+        data: { invoice },
+        id: invoice.id
     };
 }
 

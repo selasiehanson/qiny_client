@@ -46,8 +46,8 @@ export default class ApiFetcher {
         return axios.post(`${getCurrentAccountId()}/${model}`, data, config);
     }
 
-    static update(model, data) {
-        return axios.put(`${getCurrentAccountId()}/${model}/${data.id}`, data, config);
+    static update(model, data, id) {
+        return axios.put(`${getCurrentAccountId()}/${model}/${id}`, data, config);
     }
 
     static makeRequest(method, url, data = {}, headers) {
