@@ -58,7 +58,7 @@ const Form = ({params, onSaveClient, handleSubmit, invalid, pristine, submitting
 
 let ClientForm = reduxForm({
     form: 'client',
-    enableReinitialize: true,
+    enableReinitialize: false,
     validate
 })(Form);
 

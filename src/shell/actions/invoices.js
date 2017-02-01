@@ -28,14 +28,14 @@ export const getInvoices = () => {
 export const addInvoice = (invoice) => {
     return {
         type: SAGA_ADD_INVOICE,
-        data: invoice
+        data: { invoice }
     };
 }
 
 export const updateInvoice = (invoice) => {
     return {
         type: SAGA_UPDATE_INVOICE,
-        data: invoice
+        data: { invoice }
     };
 }
 

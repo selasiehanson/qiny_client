@@ -23,7 +23,6 @@ const renderLineItems = (props) => {
     let {fields, products} = props;
     const addLine = () => {
         let newItem = {
-            item_id: 0,
             description: "",
             quantity: 1,
             discount_flat: 0,
@@ -282,10 +281,10 @@ class InvoiceContainer extends Component {
 
 
 const transformInvoiceToPersist = (invoice) => {
-    invoice.client_id = invoice.client.id;
-    invoice.currency_id = invoice.currency.id;
+    invoice.client_id = invoice.client.value;
+    invoice.currency_id = invoice.currency.value;
     invoice.invoice_lines = invoice.invoice_lines.map((line) => {
-        line.product_id = line.product.id;
+        line.product_id = line.product.value;
         return line;
     });
     return invoice;
