@@ -30,35 +30,46 @@ const validate = (values) => {
 }
 
 
-const Form = ({params, onSaveClient, handleSubmit, invalid, pristine, submitting}) => {
-    let formMode = params.id ? 'Update' : 'New';
-    let buttonMode = params.id ? 'Update' : 'Create';
-    return (
-        <div className="clearfix">
-            <div className="content-header">
-                <span className="title"> {formMode} Client </span>
-            </div>
-            <div className="col-md-3"> </div>
-            <div className="col-md-6">
-                <form onSubmit={handleSubmit(onSaveClient)}>
-                    <Field name="name" component={renderInput} placeholder="Full Name" />
-                    <Field name="email" component={renderInput} placeholder="Email" />
-                    <Field name="phone_number" component={renderInput} placeholder="Phone Number" />
-                    <Field name="address" component={renderInput} placeholder="Address" />
-                    <div className="pull-right form-buttons" >
-                        <Link to="/clients" className="btn btn-default" > Cancel </Link>
-                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} Client </button>
-                    </div>
-                </form>
-            </div>
-            <div className="col-md-3"> </div>
-        </div >
-    );
+class Form extends Component {
+
+
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(this.props.current, nextProps.current)) {
+            nextProps.initialize(nextProps.current)
+        }
+    }
+
+    render() {
+        let {params, onSaveClient, handleSubmit, invalid, pristine, submitting} = this.props;
+        let formMode = params.id ? 'Update' : 'New';
+        let buttonMode = params.id ? 'Update' : 'Create';
+        return (
+            <div className="clearfix">
+                <div className="content-header">
+                    <span className="title"> {formMode} Client </span>
+                </div>
+                <div className="col-md-3"> </div>
+                <div className="col-md-6">
+                    <form onSubmit={handleSubmit(onSaveClient)}>
+                        <Field name="name" component={renderInput} placeholder="Full Name" />
+                        <Field name="email" component={renderInput} placeholder="Email" />
+                        <Field name="phone_number" component={renderInput} placeholder="Phone Number" />
+                        <Field name="address" component={renderInput} placeholder="Address" />
+                        <div className="pull-right form-buttons" >
+                            <Link to="/clients" className="btn btn-default" > Cancel </Link>
+                            <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} Client </button>
+                        </div>
+                    </form>
+                </div>
+                <div className="col-md-3"> </div>
+            </div >
+        );
+    }
 }
 
 let ClientForm = reduxForm({
     form: 'client',
-    enableReinitialize: false,
+    // enableReinitialize: false,
     validate
 })(Form);
 
@@ -103,8 +114,7 @@ class ClientContainer extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        ...state.clients,
-        initialValues: state.clients.current
+        ...state.clients
     }
 }
 

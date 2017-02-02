@@ -29,7 +29,7 @@ class Layout extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        let {app} = this.props;
+        let {app} = nextProps;
         if (app.justSignedOut) {
             hashHistory.push('/signin');
         }

@@ -95,6 +95,23 @@ const renderLineItems = (props) => {
 
 class Form extends Component {
 
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(this.props.current, nextProps.current)) {
+            // nextProps.initialize(nextProps.current)
+            let invoiceForm = {};
+            if (nextProps.isLoading) {
+                invoiceForm = {}
+            } else {
+                if (_.isEqual(nextProps.current, {})) {
+                    invoiceForm = null;
+                } else {
+                    invoiceForm = convertFromInvoiceToForm(nextProps.current)
+                }
+            }
+            nextProps.initialize(invoiceForm)
+        }
+    }
+
     handleChange(date) {
 
     }
@@ -131,6 +148,7 @@ class Form extends Component {
     }
 
     renderInvoicerFooter(buttonMode) {
+        const {currency, invoice_lines, currencies} = this.props;
         return (
             <div>
                 <div className="summing-box clearfix">
@@ -139,26 +157,26 @@ class Form extends Component {
                             <Field name="currency"
                                 component={renderSelect}
                                 placeholder="Currency"
-                                options={this.props.currencies}
+                                options={currencies}
                                 labelKey="currency_code" />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-sm-3 pull-right">
                             <label>Tax amount: </label>
-                            <label className="pull-right"> {this.getCurrency()} {this.getTotalTax()} </label>
+                            <label className="pull-right"> {currency} {this.getTotalTax(invoice_lines)} </label>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-sm-3 pull-right">
                             <label>Sub Total: </label>
-                            <label className="pull-right"> {this.getCurrency()} {this.getTotalAmount() - this.getTotalTax()} </label>
+                            <label className="pull-right"> {currency} {this.getTotalAmount(invoice_lines) - this.getTotalTax(invoice_lines)} </label>
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-sm-3 pull-right total-box">
                             <label>Total: </label>
-                            <label className="pull-right"> {this.getCurrency()} {this.getTotalAmount()} </label>
+                            <label className="pull-right"> {currency} {this.getTotalAmount(invoice_lines)} </label>
                         </div>
                     </div>
                 </div>
@@ -166,23 +184,7 @@ class Form extends Component {
         );
     }
 
-    getCurrency() {
-        if (this.modelNotSet()) {
-            return '';
-        }
-
-        if (this.props.currentInvoiceForm.values.currency) {
-            return this.props.currentInvoiceForm.values.currency.label;
-        }
-        return '';
-    }
-
-    getTotalAmount() {
-        if (this.modelNotSet()) {
-            return '';
-        }
-
-        let {invoice_lines = []} = this.props.currentInvoiceForm.values;
+    getTotalAmount(invoice_lines = []) {
         var total = invoice_lines.reduce((result, line) => {
             result += (+line.price * line.quantity)
             return result;
@@ -191,21 +193,8 @@ class Form extends Component {
         return total;
     }
 
-    modelNotSet() {
-        if (_.isEqual(this.props.currentInvoiceForm, {})) {
-            return true;
-        }
 
-        if (!_.keys(this.props.currentInvoiceForm).includes('values')) {
-            return true;
-        }
-        return false;
-    }
-
-    getTotalTax() {
-        if (this.modelNotSet()) {
-            return '';
-        }
+    getTotalTax(invoice_lines) {
         //todo: actual tax computation to come later
         return 0;
     }
@@ -250,7 +239,6 @@ class Form extends Component {
 
 let InvoiceForm = reduxForm({
     form: 'invoice',
-    enableReinitialize: true,
     validate
 })(Form);
 
@@ -318,17 +306,9 @@ const convertFromInvoiceToForm = (invoiceJson) => {
 
 
 const mapStateToProps = (state, ownProps) => {
-
-    let invoiceForm = {};
-    if (state.invoices.isLoading) {
-        invoiceForm = {}
-    } else {
-        if (_.isEqual(state.invoices.current, {})) {
-            invoiceForm = null;
-        } else {
-            invoiceForm = convertFromInvoiceToForm(state.invoices.current)
-        }
-    }
+    const selector = formValueSelector('invoice')
+    const currency = selector(state, 'currency');
+    const invoice_lines = selector(state, 'invoice_lines') || []
 
     return {
         ...ownProps,
@@ -336,7 +316,8 @@ const mapStateToProps = (state, ownProps) => {
         clients: state.clients.all,
         products: state.products.all,
         currencies: state.currencies.all,
-        initialValues: invoiceForm,
+        currency: currency ? currency.label : '',
+        invoice_lines,
         currentInvoiceForm: state.form.invoice || {}
     }
 }
@@ -349,10 +330,10 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(getCurrencies());
         },
         onEditClick(id) {
-            //dispatch(editContact(id))
+            //dispatch(editInvoice(id))
         },
         onDeleteClick(id) {
-            //dispatch(deleteContact(id))
+            //dispatch(deleteInvoice(id))
         },
         getInvoice(id) {
             dispatch(setInvoiceLoading())

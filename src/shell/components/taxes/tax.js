@@ -27,35 +27,42 @@ const validate = (values) => {
 }
 
 
-const Form = (props) => {
-    let {params, onSaveTax, handleSubmit, pristine, submitting} = props;
-    let formMode = params.id ? 'Update' : 'New';
-    let buttonMode = params.id ? 'Update' : 'Create';
-    return (
-        <div className="clearfix">
-            <div className="content-header">
-                <span className="title"> {formMode} Tax </span>
-            </div>
-            <div className="col-md-3"> </div>
-            <div className="col-md-6">
-                <form onSubmit={handleSubmit(onSaveTax)}>
-                    <Field name="name" component={renderInput} placeholder="Name" />
-                    <Field name="amount" component={renderInput} placeholder="Amount" />
-                    <Field name="description" component={renderInput} placeholder="Description" />
-                    <div className="pull-right form-buttons" >
-                        <Link to="/taxes" className="btn btn-default" > Cancel </Link>
-                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} tax </button>
-                    </div>
-                </form>
-            </div>
-            <div className="col-md-3"> </div>
-        </div >
-    );
-}
+class Form extends Component {
 
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(this.props.current, nextProps.current)) {
+            nextProps.initialize(nextProps.current)
+        }
+    }
+
+    render() {
+        let {params, onSaveTax, handleSubmit, pristine, submitting} = this.props;
+        let formMode = params.id ? 'Update' : 'New';
+        let buttonMode = params.id ? 'Update' : 'Create';
+        return (
+            <div className="clearfix">
+                <div className="content-header">
+                    <span className="title"> {formMode} Tax </span>
+                </div>
+                <div className="col-md-3"> </div>
+                <div className="col-md-6">
+                    <form onSubmit={handleSubmit(onSaveTax)}>
+                        <Field name="name" component={renderInput} placeholder="Name" />
+                        <Field name="amount" component={renderInput} placeholder="Amount" />
+                        <Field name="description" component={renderInput} placeholder="Description" />
+                        <div className="pull-right form-buttons" >
+                            <Link to="/taxes" className="btn btn-default" > Cancel </Link>
+                            <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} tax </button>
+                        </div>
+                    </form>
+                </div>
+                <div className="col-md-3"> </div>
+            </div >
+        );
+    }
+}
 let TaxForm = reduxForm({
     form: 'tax',
-    enableReinitialize: true,
     validate
 })(Form);
 
@@ -104,8 +111,7 @@ class TaxContainer extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        ...state.taxes,
-        initialValues: state.taxes.current
+        ...state.taxes
     }
 }
 

@@ -10,8 +10,8 @@ class AccountChooser extends Component {
         this.props.getUserProfile();
     }
 
-    componentWillReceiveProps() {
-        if (this.props.app.selectedAccount) {
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.app.selectedAccount) {
             hashHistory.transitionTo('dashboard');
         }
     }

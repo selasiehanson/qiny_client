@@ -29,50 +29,59 @@ const validate = (values) => {
 }
 
 
-const Form = ({params, onSaveProduct, handleSubmit, invalid, pristine, submitting}) => {
-    let formMode = params.id ? 'Update' : 'New';
-    let buttonMode = params.id ? 'Update' : 'Create';
-    return (
-        <div className="clearfix">
-            <div className="content-header">
-                <span className="title"> {formMode} Product </span>
-            </div>
-            <div className="col-md-3"> </div>
-            <div className="col-md-6">
-                <form onSubmit={handleSubmit(onSaveProduct)}>
-                    <Field name="name" component={renderInput} placeholder="Name" />
-                    <Field name="description" component={renderInput} placeholder="Description" />
-                    <Field name="reorder_level" component={renderInput} placeholder="Re-Order Level" />
+class Form extends Component {
 
-                    <div className="form-group">
-                        <label>Product Type</label>
-                        <div>
-                            <label className="radio-inline"><Field name="product_type" component="input" type="radio" value="consumable" /> Consumable</label>
-                            <label className="radio-inline"><Field name="product_type" component="input" type="radio" value="durable" /> Durable</label>
-                            <label className="radio-inline"><Field name="product_type" component="input" type="radio" value="service" /> Service</label>
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(this.props.current, nextProps.current)) {
+            nextProps.initialize(nextProps.current)
+        }
+    }
+
+    render() {
+        let { params, onSaveProduct, handleSubmit, invalid, pristine, submitting } = this.props;
+        let formMode = params.id ? 'Update' : 'New';
+        let buttonMode = params.id ? 'Update' : 'Create';
+        return (
+            <div className="clearfix" >
+                <div className="content-header">
+                    <span className="title"> {formMode} Product </span>
+                </div>
+                <div className="col-md-3"> </div>
+                <div className="col-md-6">
+                    <form onSubmit={handleSubmit(onSaveProduct)}>
+                        <Field name="name" component={renderInput} placeholder="Name" />
+                        <Field name="description" component={renderInput} placeholder="Description" />
+                        <Field name="reorder_level" component={renderInput} placeholder="Re-Order Level" />
+
+                        <div className="form-group">
+                            <label>Product Type</label>
+                            <div>
+                                <label className="radio-inline"><Field name="product_type" component="input" type="radio" value="consumable" /> Consumable</label>
+                                <label className="radio-inline"><Field name="product_type" component="input" type="radio" value="durable" /> Durable</label>
+                                <label className="radio-inline"><Field name="product_type" component="input" type="radio" value="service" /> Service</label>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="form-group">
-                        <label> Extra Info </label> <br />
-                        <Field name="can_be_sold" component={renderCheckbox} placeholder="Can be sold" />
-                        <Field name="can_be_purchased" component={renderCheckbox} placeholder="Can be purchased" />
-                    </div>
+                        <div className="form-group">
+                            <label> Extra Info </label> <br />
+                            <Field name="can_be_sold" component={renderCheckbox} placeholder="Can be sold" />
+                            <Field name="can_be_purchased" component={renderCheckbox} placeholder="Can be purchased" />
+                        </div>
 
-                    <div className="pull-right form-buttons" >
-                        <Link to="/products" className="btn btn-default" > Cancel </Link>
-                        <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} product </button>
-                    </div>
-                </form>
-            </div>
-            <div className="col-md-3"> </div>
-        </div >
-    );
+                        <div className="pull-right form-buttons" >
+                            <Link to="/products" className="btn btn-default" > Cancel </Link>
+                            <button type="submit" className="btn btn-success" disabled={pristine || submitting}> {buttonMode} product </button>
+                        </div>
+                    </form>
+                </div>
+                <div className="col-md-3"> </div>
+            </div >
+        );
+    }
 }
 
 let ProductForm = reduxForm({
     form: 'product',
-    enableReinitialize: true,
     validate
 })(Form);
 
@@ -120,8 +129,7 @@ class ProductContainer extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         ...ownProps,
-        ...state.products,
-        initialValues: state.products.current
+        ...state.products
     }
 }
 
