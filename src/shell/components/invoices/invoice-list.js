@@ -42,9 +42,16 @@ class InvoiceList extends Component {
             { name: "client", header: "Client" },
             { name: "total_amount", header: "Total Amount" },
             { name: "total_tax", header: "Total Tax" },
+            { name: 'status', header: 'Status' },
             { name: 'view', type: 'action', header: '', action: 'viewInvoice' },
             { name: 'edit', type: 'action', header: '', action: 'editInvoice' }
         ];
+
+        const statusClasses = {
+            draft: 'label-warning',
+            paid: 'label-success',
+            overdue: 'label-danger'
+        }
 
         let invoiceLink = <Link to="/invoices/new" className="btn btn-primary"> New invoice </Link>;
         let content;
@@ -59,6 +66,10 @@ class InvoiceList extends Component {
             </div>
         }
         let columnWrappers = {
+            status(f) {
+                const klass = `label ${statusClasses[f]}`
+                return <span className={klass}> {f} </span>
+            },
             view(f) {
                 return <span> <i className="fa fa-eye"> </i> </span>
             },

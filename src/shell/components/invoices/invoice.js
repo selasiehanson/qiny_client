@@ -12,6 +12,8 @@ import { getClients } from '../../actions/clients';
 import { addInvoice, cacheInvoice, getInvoice, showNewInvoice, setInvoiceLoading, updateInvoice } from '../../actions/invoices';
 import { getCurrencies } from '../../actions';
 import _ from 'lodash';
+import { dateHelpers } from '../../utils/date-helpers';
+import moment from 'moment';
 
 const validate = (values) => {
     const errors = {};
@@ -301,6 +303,10 @@ const convertFromInvoiceToForm = (invoiceJson) => {
         value: invoiceJson.currency.id
     };
 
+    const convertToMMDDYYYWithSlashes = (dateWithDashes) => moment(dateWithDashes).format('MM/DD/YYYY');
+
+    form.invoice_date = convertToMMDDYYYWithSlashes(invoiceJson.invoice_date);
+    form.due_date = convertToMMDDYYYWithSlashes(invoiceJson.due_date);
     return form;
 }
 

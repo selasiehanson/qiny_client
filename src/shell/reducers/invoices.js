@@ -27,7 +27,7 @@ const invoices = (state = initialState, action) => {
             const old = action.invoices;
             const invoices = action.invoices.map((invoice) => {
                 let newInvoice = { ...invoice };
-                newInvoice.client = invoice.client.name;
+                newInvoice.client = invoice.client
                 newInvoice.due_date = dateHelpers.simpleHumanDate(newInvoice.due_date);
                 newInvoice.invoice_date = dateHelpers.simpleHumanDate(newInvoice.invoice_date);
                 newInvoice.total_amount = `${newInvoice.currency.currency_code} ${newInvoice.total_amount}`;
