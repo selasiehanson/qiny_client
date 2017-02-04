@@ -4,17 +4,20 @@ import Table from '../utils/table';
 import { Link } from 'react-router';
 import { getInvoices, initGetInvoices } from '../../actions/invoices';
 import { hashHistory } from 'react-router';
+import Pagination from 'react-js-pagination';
 
+const PAGE_SZIE = 3;
 
 class InvoiceList extends Component {
 
     constructor(props) {
         super(props)
         this.handleEvent = this.handleEvent.bind(this);
+        this.pageChanged = this.pageChanged.bind(this);
     }
 
     componentWillMount() {
-        this.props.loadInvoices();
+        this.props.loadInvoices({ size: PAGE_SZIE, page: this.props.page });
     }
 
     //calls the appropriate method based on the action button/text that 
@@ -32,9 +35,18 @@ class InvoiceList extends Component {
         hashHistory.push(`/invoices/${invoice.id}/edit`);
     }
 
+    pageChanged(pageNumber) {
+        let values = {
+            page: pageNumber,
+            size: PAGE_SZIE
+        };
+        //this.props.dispatch(showSpinner());
+        this.props.loadInvoices(values);
+    }
+
     render() {
 
-        let {all, loading} = this.props;
+        let {all, loading, pageChanged, totalCount, page} = this.props;
         let tableFields = [
             { name: 'invoice_number', header: 'Invoice Number' },
             { name: 'invoice_date', header: "Invoice Date" },
@@ -79,11 +91,20 @@ class InvoiceList extends Component {
         }
         let newInvoiceLink;
         if (all.length !== 0) {
-            content = <Table
-                tableData={all}
-                tableFields={tableFields}
-                handleEvent={this.handleEvent}
-                columnWrappers={columnWrappers} />
+            content = <div>
+                <Table
+                    tableData={all}
+                    tableFields={tableFields}
+                    handleEvent={this.handleEvent}
+                    columnWrappers={columnWrappers} />
+                <Pagination
+                    activePage={page}
+                    itemsCountPerPage={PAGE_SZIE}
+                    totalItemsCount={totalCount}
+                    pageRangeDisplayed={4}
+                    onChange={this.pageChanged}
+                />
+            </div>
             newInvoiceLink = invoiceLink;
 
         }
@@ -111,9 +132,9 @@ const mapStateToProps = (state, ownState) => {
 
 const mapDispatchToProps = (dispatch, state) => {
     return {
-        loadInvoices() {
+        loadInvoices(values) {
             dispatch(initGetInvoices());
-            dispatch(getInvoices());
+            dispatch(getInvoices(values));
         }
     }
 }

@@ -19,9 +19,10 @@ export const initGetClients = () => {
     };
 }
 
-export const getClients = () => {
+export const getClients = (params) => {
     return {
-        type: SAGA_FETCH_CLIENTS
+        type: SAGA_FETCH_CLIENTS,
+        data: params
     }
 }
 

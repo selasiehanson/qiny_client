@@ -4,6 +4,9 @@ import Table from '../utils/table'
 import { Link } from 'react-router';
 import { getTaxes, initGetTaxes } from '../../actions/taxes';
 import { hashHistory } from 'react-router';
+import Pagination from 'react-js-pagination';
+
+const PAGE_SZIE = 3;
 
 
 class TaxList extends Component {
@@ -11,9 +14,10 @@ class TaxList extends Component {
     constructor(props) {
         super(props);
         this.handleEvent = this.handleEvent.bind(this);
+        this.pageChanged = this.pageChanged.bind(this);
     }
     componentWillMount() {
-        this.props.loadTaxes();
+        this.props.loadTaxes({ size: PAGE_SZIE, page: this.props.page });
     }
 
     //calls the appropriate method based on the action button/text that 
@@ -30,8 +34,18 @@ class TaxList extends Component {
         hashHistory.push(`/taxes/${tax.id}/edit`);
     }
 
+    pageChanged(pageNumber) {
+        let values = {
+            page: pageNumber,
+            size: PAGE_SZIE
+        };
+
+        //this.props.dispatch(showSpinner());
+        this.props.loadTaxes(values);
+    }
+
     render() {
-        let {taxes, loading} = this.props;
+        let {taxes, loading, pageChanged, totalCount, page} = this.props;
         let tableFields = [
             { name: 'name', header: "Name" },
             { name: "amount", header: "Amount" },
@@ -61,11 +75,20 @@ class TaxList extends Component {
         }
         let newTaxLink;
         if (taxes.length !== 0) {
-            content = <Table
-                tableData={taxes}
-                tableFields={tableFields}
-                handleEvent={this.handleEvent}
-                columnWrappers={columnWrappers} />
+            content = <div>
+                <Table
+                    tableData={taxes}
+                    tableFields={tableFields}
+                    handleEvent={this.handleEvent}
+                    columnWrappers={columnWrappers} />
+                <Pagination
+                    activePage={page}
+                    itemsCountPerPage={PAGE_SZIE}
+                    totalItemsCount={totalCount}
+                    pageRangeDisplayed={4}
+                    onChange={this.pageChanged}
+                />
+            </div>
             newTaxLink = taxLink;
         }
         return (
@@ -85,6 +108,7 @@ class TaxList extends Component {
 const mapStateToProps = (state, ownState) => {
     let {all, loading } = state.taxes
     return {
+        ...state.taxes,
         taxes: all,
         loading
         //transactionForm: state.form['transactions-search']
@@ -94,9 +118,9 @@ const mapStateToProps = (state, ownState) => {
 
 const mapDispatchToProps = (dispatch, state) => {
     return {
-        loadTaxes() {
+        loadTaxes(values) {
             dispatch(initGetTaxes())
-            dispatch(getTaxes())
+            dispatch(getTaxes(values))
         }
     }
 }

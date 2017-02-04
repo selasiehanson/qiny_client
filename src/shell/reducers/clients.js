@@ -18,6 +18,8 @@ const initialState = {
     current: null,
     all: [],
     loading: false,
+    page: 1,
+    totalCount: 0
 };
 
 const clients = (state = initialState, action) => {
@@ -25,7 +27,9 @@ const clients = (state = initialState, action) => {
         case CLIENTS_ALL:
             return { ...state, loading: true };
         case SAGA_FETCH_CLIENTS_SUCCESS:
-            return { ...state, all: action.clients, afterSave: false, loading: false }
+            let {data} = action.clients;
+            let {page, total_count} = action.clients.meta;
+            return { ...state, all: data, page: +page, totalCount: total_count, afterSave: false, loading: false }
         case CLIENTS_SHOW_NEW:
             return { ...state, current: {} }
         case CLIENT_CACHE:

@@ -4,16 +4,20 @@ import Table from '../utils/table'
 import { Link } from 'react-router';
 import { getProducts, initGetProducts } from '../../actions/products';
 import { hashHistory } from 'react-router';
+import Pagination from 'react-js-pagination';
+
+const PAGE_SZIE = 3;
 
 class ProductList extends Component {
 
     constructor(props) {
         super(props);
         this.handleEvent = this.handleEvent.bind(this);
+        this.pageChanged = this.pageChanged.bind(this);
     }
 
     componentWillMount() {
-        this.props.loadProducts();
+        this.props.loadProducts({ size: PAGE_SZIE, page: this.props.page });
     }
 
     //calls the appropriate method based on the action button/text that 
@@ -30,8 +34,17 @@ class ProductList extends Component {
         hashHistory.push(`/products/${product.id}/edit`);
     }
 
+    pageChanged(pageNumber) {
+        let values = {
+            page: pageNumber,
+            size: PAGE_SZIE
+        };
+        //this.props.dispatch(showSpinner());
+        this.props.loadProducts(values);
+    }
+
     render() {
-        let {products, loading } = this.props;
+        let {products, loading, pageChanged, totalCount, page } = this.props;
         let tableFields = [
             { name: 'name', header: "Name" },
             { name: 'description', header: "Description" },
@@ -65,11 +78,23 @@ class ProductList extends Component {
         }
 
         if (products.length !== 0) {
-            content = <Table
-                tableData={products}
-                tableFields={tableFields}
-                handleEvent={this.handleEvent}
-                columnWrappers={columnWrappers} />
+            content = <div>
+                <Table
+                    tableData={products}
+                    tableFields={tableFields}
+                    handleEvent={this.handleEvent}
+                    columnWrappers={columnWrappers} />
+                <div>
+                    <Pagination
+                        activePage={page}
+                        itemsCountPerPage={PAGE_SZIE}
+                        totalItemsCount={totalCount}
+                        pageRangeDisplayed={4}
+                        onChange={this.pageChanged}
+                    />
+                </div>
+
+            </div>
 
             newProductLink = productLink
         }
@@ -91,6 +116,7 @@ class ProductList extends Component {
 const mapStateToProps = (state, ownState) => {
     let {all, loading} = state.products;
     return {
+        ...state.products,
         products: all,
         loading
     }
@@ -99,9 +125,9 @@ const mapStateToProps = (state, ownState) => {
 
 const mapDispatchToProps = (dispatch, state) => {
     return {
-        loadProducts() {
+        loadProducts(values) {
             dispatch(initGetProducts());
-            dispatch(getProducts());
+            dispatch(getProducts(values));
         }
     }
 }

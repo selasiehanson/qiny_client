@@ -99,9 +99,25 @@ export const GET_APP_STATE = 'GET_APP_STATE';
 export const SIGN_OUT = 'SIGN_OUT';
 
 
+const createMessage = model => `${model} created successfully`;
+const updateMessage = model => `${model} updated successfully`;
+const Model = {
+    Invoice: 'Invoice',
+    Client: 'Client',
+    Tax: 'Tax',
+    Product: 'Product'
+}
+
+
 //MESSGAES 
-export const MSG_CLIENT_CREATE_SUCCESS = 'Client created successfully';
-export const MSG_CLIENT_UPDATE_SUCCESS = 'Client updated successfully';
-export const MSG_TAX_CREATE_SUCCESS = 'Tax created successfully';
-export const MSG_INVOICE_CREATE_SUCCESS = 'Invoice created successfully';
-export const MSG_PRODUCT_CREATE_SUCCESS = 'Product created successfully';
+export const MSG_CLIENT_CREATE_SUCCESS = createMessage(Model.Client);
+export const MSG_CLIENT_UPDATE_SUCCESS = updateMessage(Model.Client);
+
+export const MSG_TAX_CREATE_SUCCESS = createMessage(Model.Tax);
+export const MSG_TAX_UPDATE_SUCCESS = updateMessage(Model.Tax);
+
+export const MSG_INVOICE_CREATE_SUCCESS = createMessage(Model.Invoice);
+export const MSG_INVOICE_UPDATE_SUCCESS = updateMessage(Model.Invoice);
+
+export const MSG_PRODUCT_CREATE_SUCCESS = createMessage(Model.Product);
+export const MSG_PRODUCT_UPDATE_SUCCESS = updateMessage(Model.Product);

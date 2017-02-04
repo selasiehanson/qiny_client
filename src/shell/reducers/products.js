@@ -13,13 +13,16 @@ const initialState = {
     afterSave: false,
     mode: "",
     current: null,
-    all: []
+    all: [],
+    page: 1,
+    totalCount: 0
 };
 
 const products = (state = initialState, action) => {
     switch (action.type) {
         case SAGA_FETCH_PRODUCTS_SUCCESS:
-            return { ...state, all: action.products, afterSave: false }
+            let {data, page, total_count} = action.products;
+            return { ...state, all: data, page: +page, totalCount: total_count, afterSave: false, loading: false }
 
         case PRODUCTS_SHOW_NEW:
             return { ...state, current: {} }

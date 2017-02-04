@@ -1,5 +1,5 @@
 import {
-    SHOW_NOTIFICATION, 
+    SHOW_NOTIFICATION,
     HIDE_NOTIFICATION,
     SAGA_FETCH_CURRENCIES
 } from '../constants';
@@ -13,6 +13,16 @@ export function hideNotification() {
     return { type: HIDE_NOTIFICATION };
 };
 
-export function getCurrencies(){
- return { type: SAGA_FETCH_CURRENCIES };   
+export function getCurrencies() {
+    return { type: SAGA_FETCH_CURRENCIES };
 }
+
+export const showSuccessMsg = (msg) => {
+    return {
+        type: SHOW_NOTIFICATION,
+        payload: {
+            type: 'success',
+            content: msg
+        }
+    }
+};

@@ -16,7 +16,9 @@ const initialState = {
     mode: "",
     current: null,
     loading: false,
-    all: []
+    all: [],
+    page: 1,
+    totalCount: 0
 };
 
 const taxes = (state = initialState, action) => {
@@ -24,7 +26,8 @@ const taxes = (state = initialState, action) => {
         case TAXES_ALL:
             return { ...state, loading: true }
         case SAGA_FETCH_TAXES_SUCCESS:
-            return { ...state, all: action.taxes, afterSave: false, loading: false }
+            let {data, page, total_count} = action.taxes;
+            return { ...state, all: data, page: +page, totalCount: total_count, afterSave: false, loading: false }
         case TAXES_SHOW_NEW:
             return { ...state, current: {} }
         case TAX_CACHE:

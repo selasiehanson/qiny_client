@@ -18,9 +18,10 @@ export const initGetTaxes = () => {
     }
 }
 
-export const getTaxes = () => {
+export const getTaxes = (params) => {
     return {
-        type: SAGA_FETCH_TAXES
+        type: SAGA_FETCH_TAXES,
+        data: params
     }
 }
 
@@ -60,15 +61,5 @@ export const cacheTax = (tax) => {
     return {
         type: TAX_CACHE,
         data: tax
-    }
-}
-
-export const showTaxCreatedMsg = () => {
-    return {
-        type: SHOW_NOTIFICATION,
-        payload: {
-            type: 'success',
-            content: MSG_TAX_CREATE_SUCCESS
-        }
     }
 }

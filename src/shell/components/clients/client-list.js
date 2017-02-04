@@ -4,15 +4,19 @@ import Table from '../utils/table'
 import { Link } from 'react-router';
 import { getClients, initGetClients } from '../../actions/clients';
 import { hashHistory } from 'react-router';
+import Pagination from 'react-js-pagination';
+
+const PAGE_SZIE = 3;
 
 class ClientList extends Component {
 
     constructor(props) {
         super(props);
         this.handleEvent = this.handleEvent.bind(this);
+        this.pageChanged = this.pageChanged.bind(this);
     }
     componentWillMount() {
-        this.props.loadClients();
+        this.props.loadClients({ size: PAGE_SZIE, page: this.props.page });
     }
 
     //calls the appropriate method based on the action button/text that 
@@ -29,8 +33,18 @@ class ClientList extends Component {
         hashHistory.push(`/clients/${client.id}/edit`);
     }
 
+    pageChanged(pageNumber) {
+        let values = {
+            page: pageNumber,
+            size: PAGE_SZIE
+        };
+
+        //this.props.dispatch(showSpinner());
+        this.props.loadClients(values);
+    }
+
     render() {
-        let {clients, loading} = this.props;
+        let {clients, loading, pageChanged, totalCount, page} = this.props;
 
         let tableFields = [
             { name: 'name', header: "Name" },
@@ -69,11 +83,23 @@ class ClientList extends Component {
         let newClientLink;
 
         if (clients.length !== 0) {
-            content = <Table
-                tableData={clients}
-                tableFields={tableFields}
-                handleEvent={this.handleEvent}
-                columnWrappers={columnWrappers} />
+            content =
+                <div>
+                    <Table
+                        tableData={clients}
+                        tableFields={tableFields}
+                        handleEvent={this.handleEvent}
+                        columnWrappers={columnWrappers} />
+                    <div>
+                        <Pagination
+                            activePage={page}
+                            itemsCountPerPage={PAGE_SZIE}
+                            totalItemsCount={totalCount}
+                            pageRangeDisplayed={4}
+                            onChange={this.pageChanged}
+                        />
+                    </div>
+                </div>
             newClientLink = clientLink
 
         }
@@ -94,6 +120,7 @@ class ClientList extends Component {
 const mapStateToProps = (state, ownState) => {
     let {all, loading } = state.clients
     return {
+        ...state.clients,
         clients: all,
         loading
         //transactionForm: state.form['transactions-search']
@@ -103,9 +130,10 @@ const mapStateToProps = (state, ownState) => {
 
 const mapDispatchToProps = (dispatch, state) => {
     return {
-        loadClients() {
+
+        loadClients(values) {
             dispatch(initGetClients())
-            dispatch(getClients())
+            dispatch(getClients(values))
         }
     }
 }

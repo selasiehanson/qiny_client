@@ -19,9 +19,10 @@ export const initGetInvoices = () => {
     }
 }
 
-export const getInvoices = () => {
+export const getInvoices = (params) => {
     return {
-        type: SAGA_FETCH_INVOICES
+        type: SAGA_FETCH_INVOICES,
+        data: params
     }
 }
 
@@ -66,13 +67,3 @@ export const cacheInvoice = (invoice) => {
         data: invoice
     }
 }
-
-export const showInvoiceCreatedMsg = () => {
-    return {
-        type: SHOW_NOTIFICATION,
-        payload: {
-            type: 'success',
-            content: MSG_INVOICE_CREATE_SUCCESS
-        }
-    }
-};

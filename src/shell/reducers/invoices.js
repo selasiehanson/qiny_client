@@ -16,7 +16,9 @@ const initialState = {
     original: [],
     loading: false,
     afterSave: false,
-    isLoading: false
+    isLoading: false,
+    page: 1,
+    totalCount: 0
 }
 
 const invoices = (state = initialState, action) => {
@@ -24,8 +26,10 @@ const invoices = (state = initialState, action) => {
         case INVOICES_ALL:
             return { ...state, loading: true }
         case SAGA_FETCH_INVOICES_SUCCESS:
-            const old = action.invoices;
-            const invoices = action.invoices.map((invoice) => {
+            let {invoices} = action.invoices;
+            let {page, total_count} = action.invoices.meta;
+            const old = invoices;
+            const _invoices = invoices.map((invoice) => {
                 let newInvoice = { ...invoice };
                 newInvoice.client = invoice.client
                 newInvoice.due_date = dateHelpers.simpleHumanDate(newInvoice.due_date);
@@ -34,7 +38,9 @@ const invoices = (state = initialState, action) => {
                 newInvoice.total_tax = `${newInvoice.currency.currency_code} ${newInvoice.total_tax}`;
                 return newInvoice;
             });
-            return { ...state, all: invoices, afterSave: false, original: old, current: {}, loading: false }
+
+            return { ...state, all: _invoices, page: +page, totalCount: total_count, original: old, current: {}, afterSave: false, loading: false }
+        //return { ...state, all: invoices, afterSave: false, original: old, current: {}, loading: false }
 
         case INVOICES_SHOW_NEW:
             return { ...state, current: {} }

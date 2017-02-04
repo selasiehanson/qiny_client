@@ -4,15 +4,20 @@ import {
     SAGA_FETCH_CLIENTS_SUCCESS,
     SAGA_GET_CLIENT_SUCCESS,
     SAGA_ADD_CLIENT_SUCCESS,
-    SAGA_UPDATE_CLIENT_SUCCESS
+    SAGA_UPDATE_CLIENT_SUCCESS,
+    MSG_CLIENT_CREATE_SUCCESS,
+    MSG_CLIENT_UPDATE_SUCCESS
 } from '../constants';
-import { showClientSavedMsg } from '../actions/clients';
+import { showSuccessMsg } from '../actions';
+import { makQueryString } from '../utils/url';
+
 const CLIENTS = 'clients';
+
 export function* clientsFetchList(action) {
     //call api to get the users
-
+    let queryString = makQueryString(action.data)
     try {
-        const res = yield call(ApiFetcher.findAll, CLIENTS);
+        const res = yield call(ApiFetcher.findAll, `${CLIENTS}?${queryString}`);
         yield put({
             type: SAGA_FETCH_CLIENTS_SUCCESS,
             clients: res.data
@@ -33,7 +38,7 @@ export function* addClient(action) {
             success: true
         });
 
-        yield put(showClientSavedMsg());
+        yield put(showSuccessMsg(MSG_CLIENT_CREATE_SUCCESS));
     } catch (e) {
 
     }
@@ -61,6 +66,8 @@ export function* updateClient(action) {
             client: res.data,
             success: true
         });
+        yield put(showSuccessMsg(MSG_CLIENT_UPDATE_SUCCESS));
+
     } catch (e) {
 
     }

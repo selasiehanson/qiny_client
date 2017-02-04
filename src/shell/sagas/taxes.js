@@ -5,8 +5,10 @@ import {
     SAGA_GET_TAX_SUCCESS,
     SAGA_ADD_TAX_SUCCESS,
     SAGA_UPDATE_TAX_SUCCESS,
+    MSG_TAX_CREATE_SUCCESS,
+    MSG_TAX_UPDATE_SUCCESS
 } from '../constants';
-import { showTaxCreatedMsg } from '../actions/taxes';
+import { showSuccessMsg } from '../actions/index';
 const TAXES = 'taxes';
 export function* taxesFetchList(action) {
     //call api to get the users
@@ -32,7 +34,7 @@ export function* addTax(action) {
             tax: res.data
         });
 
-        yield put(showTaxCreatedMsg());
+        yield put(showSuccessMsg(MSG_TAX_CREATE_SUCCESS));
     } catch (e) {
 
     }
@@ -59,6 +61,7 @@ export function* updateTax(action) {
             type: SAGA_UPDATE_TAX_SUCCESS,
             tax: res.data
         });
+        yield put(showSuccessMsg(MSG_TAX_UPDATE_SUCCESS));
     } catch (e) {
 
     }

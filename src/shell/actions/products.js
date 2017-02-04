@@ -17,9 +17,10 @@ export const initGetProducts = () => {
         type: PRODUCTS_ALL
     }
 }
-export const getProducts = () => {
+export const getProducts = (params) => {
     return {
-        type: SAGA_FETCH_PRODUCTS
+        type: SAGA_FETCH_PRODUCTS,
+        data: params
     }
 }
 

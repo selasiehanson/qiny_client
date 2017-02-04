@@ -21,6 +21,7 @@
     "react-addons-shallow-compare": "^0.14.8",
     "react-datepicker": "^0.39.0",
     "react-dom": "^15.4.1",
+    "react-js-pagination": "^2.0.2",
     "react-redux": "^4.4.6",
     "react-router": "^3.0.0",
     "react-router-redux": "^4.0.7",
