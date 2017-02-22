@@ -17,13 +17,13 @@ Server Side Located at [Qiny Api](https://github.com/selasiehanson/qiny_api)
 * Expense Tracking
 
 ## Screenshots
-![One](https://github.com/selasiehanson/qiny_client/sc 1.png)
-![One](https://github.com/selasiehanson/qiny_client/sc 2.png)
-![One](https://github.com/selasiehanson/qiny_client/sc 3.png)
-![One](https://github.com/selasiehanson/qiny_client/sc 4.png)
-![One](https://github.com/selasiehanson/qiny_client/sc 5.png)
-![One](https://github.com/selasiehanson/qiny_client/sc 6.png)
-![One](https://github.com/selasiehanson/qiny_client/sc 7.png)
-![One](https://github.com/selasiehanson/qiny_client/sc 8.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_1.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_2.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_3.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_4.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_5.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_6.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_7.png)
+![One](https://github.com/selasiehanson/qiny_client/blob/master/sc_8.png)
 
 
