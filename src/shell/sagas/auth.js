@@ -78,7 +78,7 @@ export function* getUserProfile(action) {
         const res = yield call(ApiFetcher.makeRequest, 'get', 'accounts/profile', {}, config);
         yield put({
             type: SAGA_GET_USER_PROFILE_SUCCESS,
-            data: res.data
+            data: res.data.user
         });
     } catch (error) {
         console.error(error);

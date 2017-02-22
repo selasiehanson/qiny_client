@@ -50,7 +50,7 @@ export function* getInvoice(action) {
         const res = yield call(ApiFetcher.find, INVOICES, action.id)
         yield put({
             type: SAGA_GET_INVOICE_SUCCESS,
-            invoice: res.data
+            invoice: res.data.invoice
         });
     } catch (e) {
 
