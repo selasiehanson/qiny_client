@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import { Link } from 'react-router';
 import {
     renderInput,
@@ -18,6 +18,21 @@ import moment from 'moment';
 const validate = (values) => {
     const errors = {};
 
+    if(!values.currency) {
+      errors.currency = "Currency is required."
+    }
+
+    if(!values.client) {
+      errors.client = "Client is required."
+    }
+
+    if(!values.invoice_date) {
+      errors.invoice_date = "Invoice date is required."
+    }
+
+    if(!values.due_date) {
+      errors.due_date = "Due date is required."
+    }
     return errors;
 }
 
@@ -266,11 +281,12 @@ class InvoiceContainer extends Component {
                 <InvoiceForm {...this.props} />
             </div>
         );
-    }
+      }
 }
 
 
 const transformInvoiceToPersist = (invoice) => {
+    let dateFormat = "YYYY/MM/DD";
     invoice.client_id = invoice.client.value;
     invoice.currency_id = invoice.currency.value;
     invoice.invoice_lines = invoice.invoice_lines || [];
@@ -278,6 +294,8 @@ const transformInvoiceToPersist = (invoice) => {
         line.product_id = line.product.value;
         return line;
     });
+    invoice.due_date = moment(invoice.due_date).format(dateFormat);
+    invoice.invoice_date = moment(invoice.invoice_date).format(dateFormat);
     return invoice;
 }
 

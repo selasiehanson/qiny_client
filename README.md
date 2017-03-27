@@ -1,6 +1,6 @@
 ## Qiny Client
 Client side of Qiny invoicing app
-Server Side Located at [Qiny Api](https://github.com/selasiehanson/qiny_api) 
+The api is Located at [Qiny Api](https://github.com/selasiehanson/qiny_api) 
 
 ## Features
 * Clients

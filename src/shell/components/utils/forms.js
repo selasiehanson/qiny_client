@@ -16,8 +16,8 @@ const renderInput = field => {
         <div className="form-group">
             {label}
             <div>
-                <input {...field.input} className="form-control" />
-                {field.meta.error && field.meta.touched && <span className="text-danger"> {field.meta.error} </span>}
+                <input {...field.input} className="form-control" type={field.type}/>
+                {field.meta.error && field.meta.touched && <div className="text-danger"> {field.meta.error} </div>}
             </div>
         </div>
     )
@@ -32,7 +32,7 @@ const renderDate = field => {
                 <DatePicker {...field.input} className="form-control"
                     selected={field.input.value ? moment(field.input.value) : null}
                     />
-                {field.meta.error && field.meta.touched && <span className="text-danger"> {field.meta.error} </span>}
+                {field.meta.error && field.meta.touched && <div className="text-danger"> {field.meta.error} </div>}
             </div>
         </div>
     )
@@ -84,6 +84,8 @@ const renderSelect = field => {
                         
     
                 }}/>
+
+                {field.meta.error && field.meta.touched && <div className="text-danger"> {field.meta.error} </div>}
             </div>
         </div>
     );

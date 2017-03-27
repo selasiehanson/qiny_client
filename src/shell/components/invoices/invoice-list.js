@@ -6,7 +6,7 @@ import { getInvoices, initGetInvoices } from '../../actions/invoices';
 import { hashHistory } from 'react-router';
 import Pagination from 'react-js-pagination';
 
-const PAGE_SZIE = 3;
+const PAGE_SZIE = 10;
 
 class InvoiceList extends Component {
 

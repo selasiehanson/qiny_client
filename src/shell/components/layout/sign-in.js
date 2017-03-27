@@ -9,15 +9,15 @@ const validate = (values) => {
     const errors = {};
 
     if (!values.email) {
-        errors.email = 'Please provide an email.'
+        errors.email = 'Please provide an email.';
     }
 
     if (!values.password) {
-        errors.password = 'Please provide a password.'
+        errors.password = 'Please provide a password.';
     }
 
     return errors;
-}
+};
 
 const Form = ({params, signIn, handleSubmit, pristine, submitting, signInMessage}) => {
     var signInError = signInMessage !== null ? <div className="invalid-signin bg-danger"> {signInMessage} </div> : null;
